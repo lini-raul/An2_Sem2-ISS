@@ -1,0 +1,4 @@
+rootProject.name = "Biblioteca_ISS"
+include 'src:main:Domain'
+findProject(':src:main:Domain')?.name = 'Domain'
+
