@@ -7,6 +7,7 @@ import utils.observer.Observer;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Service implements Observable{
     private AbonatRepository abonatRepo;
@@ -16,13 +17,16 @@ public class Service implements Observable{
     private ReviewRepository reviewRepo;
     private ValidatorImprumut validatorImprumut;
 
-    public Service(AbonatRepository abonatRepo, BibliotecarRepository bibliotecarRepo, CarteRepository carteRepo, ImprumutRepository imprumutRepo, ReviewRepository reviewRepo, ValidatorImprumut validatorImprumut) {
+    private ValidatorCarte validatorCarte;
+
+    public Service(AbonatRepository abonatRepo, BibliotecarRepository bibliotecarRepo, CarteRepository carteRepo, ImprumutRepository imprumutRepo, ReviewRepository reviewRepo, ValidatorImprumut validatorImprumut, ValidatorCarte validatorCarte) {
         this.abonatRepo = abonatRepo;
         this.bibliotecarRepo = bibliotecarRepo;
         this.carteRepo = carteRepo;
         this.imprumutRepo = imprumutRepo;
         this.reviewRepo = reviewRepo;
         this.validatorImprumut = validatorImprumut;
+        this.validatorCarte = validatorCarte;
     }
 
     public Abonat findAbonatByCredentials(String username, String password) throws RepositoryException {
@@ -39,11 +43,39 @@ public class Service implements Observable{
         return carti;
     }
 
+    public List<Imprumut> findAllImprumuturi(){
+        List<Imprumut> imprumuturi = (List<Imprumut>) imprumutRepo.findAll();
+        return imprumuturi;
+    }
+
+    public List<Carte> filterCartiByTitlu(String titlu){
+        List<Carte> cartiFiltered = findAllCarti().stream().filter(c->c.getTitlu().contains(titlu)).collect(Collectors.toList());
+        return cartiFiltered;
+    }
+
+    public List<Carte> filterCartiByAutor(String autor){
+        List<Carte> cartiFiltered = findAllCarti().stream().filter(c->c.getAutor().contains(autor)).collect(Collectors.toList());
+        return cartiFiltered;
+    }
+
+
     public void addReview(int idAbonat, int idCarte, String descriere) {
         Review review = new Review(idAbonat,idCarte,descriere);
         reviewRepo.add(review);
         notifyObservers();
 
+    }
+
+    public void addCarte(String titlu,String autor, int nrExemplare) throws ValidateException {
+        Carte carte = new Carte(titlu, autor, nrExemplare);
+        validatorCarte.validate(carte);
+        carteRepo.add(carte);
+        notifyObservers();
+    }
+
+    public void deleteCarte(Carte carte){
+        carteRepo.delete(carte);
+        notifyObservers();
     }
 
     public void addImprumut(LocalDate data, int nrExemplare, int idCarte,int idAbonat) throws ValidateException, RepositoryException {
@@ -68,6 +100,18 @@ public class Service implements Observable{
         return reviews;
     }
 
+    public void returneazaImrumut(Imprumut imprumut) throws RepositoryException {
+        imprumut.setStatus(StatusImprumut.PREDAT);
+        imprumutRepo.update(imprumut);
+
+        Carte carte = carteRepo.findById(imprumut.getIdCarte());
+        carte.setNrExemplare(carte.getNrExemplare() + imprumut.getNrExemplare());
+
+        carteRepo.update(carte);
+        notifyObservers();
+
+    }
+
 
     private List<Observer> observers = new ArrayList<>();
 
@@ -85,4 +129,6 @@ public class Service implements Observable{
     public void notifyObservers() {
         observers.stream().forEach(x->x.update());
     }
+
+
 }

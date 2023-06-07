@@ -1,11 +1,20 @@
 package domain;
 
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Carte")
 
 public class Carte extends Identifiable{
     private String titlu;
     private String autor;
     private int nrExemplare;
+
+    public Carte(){
+
+    }
 
     public Carte(String titlu, String autor, int nrExemplare) {
         this.titlu = titlu;

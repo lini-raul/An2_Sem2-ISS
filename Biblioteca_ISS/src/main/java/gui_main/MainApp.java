@@ -1,6 +1,7 @@
 package gui_main;
 
 import controller.LoginController;
+import domain.ValidatorCarte;
 import domain.ValidatorImprumut;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import repository.*;
 import repository.database.*;
+import repository.orm.*;
 import service.Service;
 
 import java.io.FileReader;
@@ -28,13 +30,22 @@ public class MainApp extends Application {
             System.out.println("Cannot find bd.config " +e);
         }
 
-        AbonatRepository abonatRepository = new AbonatDBRepository(props);
-        BibliotecarRepository bibliotecarRepository = new BibliotecarDBRepository(props);
-        CarteRepository carteRepository = new CarteDBRepository(props);
+        //AbonatRepository abonatRepository = new AbonatDBRepository(props);
+        //BibliotecarRepository bibliotecarRepository = new BibliotecarDBRepository(props);
+        //ReviewRepository reviewRepository = new ReviewDBRepository(props);
+        //CarteRepository carteRepository = new CarteDBRepository(props);
+        AbonatRepository abonatRepository = new AbonatORMRepository();
+        BibliotecarRepository bibliotecarRepository = new BibliotecarORMRepository();
+        ReviewRepository reviewRepository = new ReviewORMRepository();
+        CarteRepository carteRepository = new CarteORMRepository();
+
+        //couldnt make the ImprumutRepository with ORM
+        //ImprumutRepository imprumutRepository = new ImprumutORMRepository();
         ImprumutRepository imprumutRepository = new ImprumutDBRepository(props);
-        ReviewRepository reviewRepository = new ReviewDBRepository(props);
+
         ValidatorImprumut validatorImprumut = new ValidatorImprumut();
-        srv = new Service(abonatRepository,bibliotecarRepository,carteRepository,imprumutRepository,reviewRepository, validatorImprumut);
+        ValidatorCarte validatorCarte = new ValidatorCarte();
+        srv = new Service(abonatRepository,bibliotecarRepository,carteRepository,imprumutRepository,reviewRepository, validatorImprumut, validatorCarte);
 
         initView(primaryStage);
         primaryStage.show();

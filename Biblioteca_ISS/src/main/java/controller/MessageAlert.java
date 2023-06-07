@@ -11,4 +11,11 @@ public class MessageAlert {
         message.setContentText(text);
         message.showAndWait();
     }
+    static void showMessage(Stage owner, String text){
+        Alert message =new Alert(Alert.AlertType.INFORMATION);
+        message.initOwner(owner);
+        message.setTitle("Confirmation message!");
+        message.setContentText(text);
+        message.showAndWait();
+    }
 }

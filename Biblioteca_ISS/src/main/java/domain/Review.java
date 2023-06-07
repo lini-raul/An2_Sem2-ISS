@@ -1,12 +1,20 @@
 package domain;
 
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Review")
 
 public class Review extends Identifiable{
     private int idAbonat;
     private int idCarte;
     private String descriere;
 
+    public Review(){
+
+    }
     public Review(int idAbonat, int idCarte, String descriere) {
         this.idAbonat = idAbonat;
         this.idCarte = idCarte;

@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -27,11 +28,42 @@ public class CarteDBRepository implements CarteRepository {
 
     @Override
     public void add(Carte elem) {
+        logger.traceEntry("saving task {}", elem);
+        Connection con = dbUtils.getConnection();
+        try(PreparedStatement preStmt = con.prepareStatement("INSERT INTO Carte (titlu, autor, nrExemplare) values (?,?,?)")) {
+            preStmt.setString(1,elem.getTitlu());
+            preStmt.setString(2, elem.getAutor());
+            preStmt.setInt(3, elem.getNrExemplare());
+
+            int result = preStmt.executeUpdate();
+            logger.trace("Saved {} instances", result);
+
+        } catch (SQLException e) {
+            logger.error(e);
+            System.err.println("Error DB " + e);
+            throw new RuntimeException(e);
+        } ;
+        logger.traceExit();
 
     }
 
     @Override
     public void delete(Carte elem) {
+        logger.traceEntry("deleting task {}", elem);
+        Connection con = dbUtils.getConnection();
+        try(PreparedStatement preStmt = con.prepareStatement("DELETE FROM Carte WHERE id=?")) {
+            preStmt.setInt(1, elem.getId());
+
+            preStmt.executeUpdate();
+            logger.trace("deleted {} instances", elem);
+
+        } catch (SQLException e) {
+            logger.error(e);
+            System.err.println("Error DB " + e);
+            throw new RuntimeException(e);
+        } ;
+        logger.traceExit();
+
 
     }
 

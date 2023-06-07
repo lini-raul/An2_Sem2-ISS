@@ -2,6 +2,11 @@ package domain;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Imprumut")
 
 public class Imprumut extends Identifiable{
     private LocalDate data;
@@ -9,6 +14,10 @@ public class Imprumut extends Identifiable{
     private int nrExemplare;
     private int idCarte;
     private int idAbonat;
+
+    public Imprumut(){
+
+    }
 
     public Imprumut(LocalDate data, StatusImprumut status, int nrExemplare, int idCarte, int idAbonat) {
         this.data = data;

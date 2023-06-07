@@ -2,11 +2,19 @@ package domain;
 
 import java.util.Objects;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="Bibliotecar")
 public class Bibliotecar extends Identifiable{
     private String username;
     private String password;
     private String nume;
 
+    public Bibliotecar(){
+
+    }
     public Bibliotecar(String username, String password, String nume) {
         this.username = username;
         this.password = password;

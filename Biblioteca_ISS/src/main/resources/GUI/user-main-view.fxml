@@ -25,9 +25,9 @@
         </columns>
       </TableView>
       <Button fx:id="buttonAddImprumut" layoutX="267.0" layoutY="405.0" mnemonicParsing="false" onAction="#handleAddImprumut" text="Imprumuta" />
-      <TextField layoutX="42.0" layoutY="38.0" prefHeight="26.0" prefWidth="262.0" />
-      <Button layoutX="166.0" layoutY="87.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="61.0" text="Titlu" />
-      <Button layoutX="241.0" layoutY="87.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="62.0" text="Autor" />
+      <TextField fx:id="textFieldFilter" layoutX="42.0" layoutY="38.0" prefHeight="26.0" prefWidth="262.0" />
+      <Button fx:id="buttonFilterTitlu" layoutX="166.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleFilterByTitlu" prefHeight="26.0" prefWidth="61.0" text="Titlu" />
+      <Button fx:id="buttonFilterAutor" layoutX="241.0" layoutY="87.0" mnemonicParsing="false" onAction="#handleFilterByAutor" prefHeight="26.0" prefWidth="62.0" text="Autor" />
       <Label layoutX="35.0" layoutY="86.0" text="Cauta dupa:">
          <font>
             <Font size="18.0" />
@@ -36,6 +36,6 @@
       <Button fx:id="buttonAddReview" layoutX="745.0" layoutY="418.0" mnemonicParsing="false" onAction="#handleAddReview" text="Adauga review" />
       <TextField fx:id="textFieldNrExemplare" layoutX="147.0" layoutY="405.0" prefHeight="26.0" prefWidth="94.0" />
       <Label layoutX="21.0" layoutY="409.0" prefHeight="18.0" prefWidth="95.0" text="Numar exemplare:" />
-      <TextArea fx:id="textAreaReview" layoutX="429.0" layoutY="380.0" prefHeight="94.0" prefWidth="273.0" />
+      <TextArea fx:id="textAreaReview" layoutX="432.0" layoutY="380.0" prefHeight="94.0" prefWidth="273.0" />
    </children>
 </AnchorPane>

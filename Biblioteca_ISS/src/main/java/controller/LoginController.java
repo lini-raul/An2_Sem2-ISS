@@ -38,31 +38,32 @@ public class LoginController {
     public void handleLoginAbonat(){
         String username= textFieldUsername.getText();
         String password = textFieldPassword.getText();
+            try{
+                Abonat abonat = service.findAbonatByCredentials(username,password);
 
-        try{
-            Abonat abonat = service.findAbonatByCredentials(username,password);
+                Stage stage = new Stage();
+                stage.setTitle("Biblioteca");
+                FXMLLoader bibliotecaUiLoader = new FXMLLoader();
+                bibliotecaUiLoader.setLocation(getClass().getResource("/GUI/user-main-view.fxml"));
 
-            Stage stage = new Stage();
-            stage.setTitle("Biblioteca");
-            FXMLLoader bibliotecaUiLoader = new FXMLLoader();
-            bibliotecaUiLoader.setLocation(getClass().getResource("/GUI/user-main-view.fxml"));
+                AnchorPane bibliotecaUiLayout = bibliotecaUiLoader.load();
 
-            AnchorPane bibliotecaUiLayout = bibliotecaUiLoader.load();
+                MainAbonatController mainAbonatController = bibliotecaUiLoader.getController();
+                mainAbonatController.setService(service,stage,abonat);
 
-            MainAbonatController mainAbonatController = bibliotecaUiLoader.getController();
-            mainAbonatController.setService(service,stage,abonat);
+                stage.setScene((new Scene(bibliotecaUiLayout)));
+                stage.setWidth(1000);
+                stage.show();
+                this.dialogStage.hide();
 
-            stage.setScene((new Scene(bibliotecaUiLayout)));
-            stage.setWidth(1000);
-            stage.show();
-            this.dialogStage.hide();
+            } catch (RepositoryException e) {
+                MessageAlert messageAlert = null;
+                messageAlert.showErrorMessage(this.dialogStage, e.getMessage());
+            } catch(IOException e){
+                throw new RuntimeException(e);
+            }
 
-        } catch (RepositoryException e) {
-            MessageAlert messageAlert = null;
-            messageAlert.showErrorMessage(this.dialogStage, e.getMessage());
-        } catch(IOException e){
-            throw new RuntimeException(e);
-        }
+
     }
     public void handleLoginBibliotecar(){
         String username= textFieldUsername.getText();

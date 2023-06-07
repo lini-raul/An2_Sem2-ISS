@@ -1,14 +1,23 @@
 package domain;
 
+import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
-public class Abonat extends Identifiable{
+@Entity
+@Table(name="Abonat")
+public class Abonat extends Identifiable {
     private String username;
     private String password;
     private String nume;
     private String CNP;
     private String adresa;
     private String telefon;
+
+    public Abonat() {
+
+    }
 
     public Abonat(String username, String password, String nume, String CNP, String adresa, String telefon) {
         this.username = username;
@@ -81,7 +90,7 @@ public class Abonat extends Identifiable{
     }
 
     @Override
-    public String toString() {
+    public String   toString() {
         return "Abonat{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +

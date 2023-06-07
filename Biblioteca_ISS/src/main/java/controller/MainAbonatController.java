@@ -51,6 +51,13 @@ public class MainAbonatController  implements Observer {
     TextField textFieldNrExemplare;
     @FXML
     Button buttonAddImprumut;
+    @FXML
+    Button buttonFilterTitlu;
+    @FXML
+    Button buttonFilterAutor;
+    @FXML
+    TextField textFieldFilter;
+
 
 
     public void setService(Service service, Stage stage,Abonat abonat){
@@ -59,10 +66,10 @@ public class MainAbonatController  implements Observer {
         this.abonat = abonat;
         service.addObserver(this);
 
-        initialiseBibliotecaController();
+        initialiseAbonatController();
     }
 
-    private void initialiseBibliotecaController() {
+    private void initialiseAbonatController() {
         List<Carte> c = new ArrayList<>();
         service.findAllCarti().forEach(c::add);
 
@@ -121,8 +128,6 @@ public class MainAbonatController  implements Observer {
             }
 
 
-
-
         }
         else{
             MessageAlert messageAlert = null;
@@ -158,11 +163,40 @@ public class MainAbonatController  implements Observer {
 
         }
     }
+    public void handleFilterByTitlu(){
+            String titlu = textFieldFilter.getText();
+            List<Carte> c = service.filterCartiByTitlu(titlu);
+
+            carti = FXCollections.observableArrayList(c);
+
+            tableViewCarti.getItems().clear();
+            tableViewCarti.setItems(carti);
+
+            //tableColumnTitlu.setCellValueFactory(new PropertyValueFactory<>("titlu"));
+            //tableColumnAutor.setCellValueFactory(new PropertyValueFactory<>("autor"));
+            //tableColumnNrExemplare.setCellValueFactory(new PropertyValueFactory<>("nrExemplare"));
+
+    }
+
+    public void handleFilterByAutor(){
+        String autor = textFieldFilter.getText();
+        List<Carte> c = service.filterCartiByAutor(autor);
+
+        carti = FXCollections.observableArrayList(c);
+
+        tableViewCarti.getItems().clear();
+        tableViewCarti.setItems(carti);
+
+        //tableColumnTitlu.setCellValueFactory(new PropertyValueFactory<>("titlu"));
+        //tableColumnAutor.setCellValueFactory(new PropertyValueFactory<>("autor"));
+        //tableColumnNrExemplare.setCellValueFactory(new PropertyValueFactory<>("nrExemplare"));
+
+    }
 
     @Override
     public void update() {
         loadReviewsOnScreen();
-        initialiseBibliotecaController();
+        initialiseAbonatController();
 
     }
 }
